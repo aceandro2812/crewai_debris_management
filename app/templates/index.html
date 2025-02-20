@@ -5,73 +5,181 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Construction Site Debris Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Construction Site Debris Management</h1>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-['Inter']">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <h1 class="text-4xl font-bold text-center mb-12 text-gray-800 animate__animated animate__fadeIn">Construction Site Debris Management</h1>
         
         <!-- Materials Management Section -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 text-gray-700">Materials Management</h2>
-            <form id="materialForm" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="materialName" placeholder="Material Name" required
-                        class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
-                    <input type="number" id="materialWeight" placeholder="Weight (kg)" required
-                        class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
-                </div>
-                <button type="submit"
-                    class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
                     Add Material
-                </button>
-            </form>
-        </div>
+                </h2>
+                <form id="materialForm" class="space-y-4">
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <input type="text" id="materialName" placeholder=" " required
+                                class="peer w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors">
+                            <label class="absolute left-3 -top-2.5 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
+                                Material Name
+                            </label>
+                        </div>
+                        <div class="relative">
+                            <input type="number" id="materialWeight" placeholder=" " required
+                                class="peer w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors">
+                            <label class="absolute left-3 -top-2.5 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
+                                Weight (kg)
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transform transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Add Material
+                    </button>
+                </form>
+            </div>
 
-        <!-- Materials List Section -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 text-gray-700">Materials List</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full table-auto">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight (kg)</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Added</th>
-                        </tr>
-                    </thead>
-                    <tbody id="materialsList" class="bg-white divide-y divide-gray-200">
-                        <!-- Materials will be inserted here -->
-                    </tbody>
-                </table>
+            <!-- Materials List Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    Materials List
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Weight (kg)</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date Added</th>
+                            </tr>
+                        </thead>
+                        <tbody id="materialsList" class="bg-white divide-y divide-gray-200">
+                            <!-- Materials will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         <!-- Debris Analysis Section -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-700">Debris Analysis</h2>
-            <form id="debrisForm" class="space-y-4">
-                <input type="number" id="debrisWeight" placeholder="Debris Weight (kg)" required
-                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
-                <button type="submit"
-                    class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-200">
-                    Analyze Debris
+        <div class="bg-white rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                Debris Analysis
+            </h2>
+            <form id="debrisForm" class="space-y-6">
+                <div class="relative">
+                    <input type="number" id="debrisWeight" placeholder=" " required
+                        class="peer w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors">
+                    <label class="absolute left-3 -top-2.5 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm">
+                        Debris Weight (kg)
+                    </label>
+                </div>
+                <button type="submit" id="analyzeButton"
+                    class="w-full bg-purple-500 text-white py-3 px-6 rounded-lg hover:bg-purple-600 transform transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 flex items-center justify-center">
+                    <span>Analyze Debris</span>
+                    <div id="loadingSpinner" class="hidden ml-3">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
                 </button>
             </form>
-            <div id="analysisResult" class="mt-4 p-4 bg-gray-50 rounded hidden">
-                <!-- Analysis results will be displayed here -->
+
+            <div id="analysisResult" class="mt-8 space-y-8 hidden animate__animated animate__fadeIn">
+                <div class="analysis-section">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        Analysis Report
+                    </h3>
+                    <div id="analysisContent" class="bg-gray-50 p-6 rounded-lg markdown-content"></div>
+                </div>
+                <div class="analysis-section">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3 3m0 0l-3-3m3 3V8"/>
+                        </svg>
+                        Disposal Strategies
+                    </h3>
+                    <div id="disposalContent" class="bg-gray-50 p-6 rounded-lg markdown-content"></div>
+                </div>
+                <div class="analysis-section">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        Environmental Impact
+                    </h3>
+                    <div id="environmentalContent" class="bg-gray-50 p-6 rounded-lg markdown-content"></div>
+                </div>
             </div>
         </div>
     </div>
 
+    <style>
+        .markdown-content {
+            line-height: 1.8;
+            color: #374151;
+        }
+        .markdown-content h1 { font-size: 1.875rem; font-weight: 700; margin: 1.5em 0 0.75em; color: #1F2937; }
+        .markdown-content h2 { font-size: 1.5rem; font-weight: 600; margin: 1.25em 0 0.625em; color: #1F2937; }
+        .markdown-content h3 { font-size: 1.25rem; font-weight: 600; margin: 1em 0 0.5em; color: #1F2937; }
+        .markdown-content p { margin: 1em 0; }
+        .markdown-content ul { list-style-type: disc; margin: 1em 0; padding-left: 1.5em; }
+        .markdown-content ol { list-style-type: decimal; margin: 1em 0; padding-left: 1.5em; }
+        .markdown-content li { margin: 0.5em 0; }
+        .markdown-content code {
+            background-color: #F3F4F6;
+            padding: 0.2em 0.4em;
+            border-radius: 0.25em;
+            font-size: 0.875em;
+            color: #DC2626;
+        }
+        .markdown-content pre {
+            background-color: #F3F4F6;
+            padding: 1em;
+            border-radius: 0.5em;
+            overflow-x: auto;
+            margin: 1em 0;
+        }
+        .markdown-content blockquote {
+            border-left: 4px solid #E5E7EB;
+            padding-left: 1em;
+            margin: 1em 0;
+            color: #6B7280;
+        }
+        .analysis-section {
+            transition: transform 0.2s ease-in-out;
+        }
+        .analysis-section:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+
     <script>
-        // Fetch and display materials
+        // Fetch and display materials with animation
         async function fetchMaterials() {
             try {
                 const response = await fetch('/materials/');
                 const materials = await response.json();
                 const tbody = document.getElementById('materialsList');
-                tbody.innerHTML = materials.map(material => `
-                    <tr>
+                tbody.innerHTML = materials.map((material, index) => `
+                    <tr class="animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${material.material_name}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${material.weight}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${new Date(material.date_added).toLocaleDateString()}</td>
@@ -82,7 +190,7 @@
             }
         }
 
-        // Add new material
+        // Add new material with animation
         document.getElementById('materialForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const materialName = document.getElementById('materialName').value;
@@ -92,7 +200,7 @@
                 const response = await fetch('/materials/', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         material_name: materialName,
@@ -101,42 +209,81 @@
                 });
 
                 if (response.ok) {
-                    document.getElementById('materialForm').reset();
+                    document.getElementById('materialName').value = '';
+                    document.getElementById('materialWeight').value = '';
                     fetchMaterials();
+                } else {
+                    throw new Error('Failed to add material');
                 }
             } catch (error) {
                 console.error('Error adding material:', error);
+                alert('Failed to add material. Please try again.');
             }
         });
 
-        // Analyze debris
+        // Initialize materials list on page load
+        fetchMaterials();
+
+        // Handle debris analysis form submission
         document.getElementById('debrisForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const debrisWeight = document.getElementById('debrisWeight').value;
-
+            const analysisResult = document.getElementById('analysisResult');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const analyzeButton = document.getElementById('analyzeButton');
+            
             try {
+                // Show loading spinner
+                loadingSpinner.classList.remove('hidden');
+                analyzeButton.querySelector('span').textContent = 'Analyzing...';
+                analyzeButton.disabled = true;
+                
                 const response = await fetch('/debris/analyze/', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         weight: parseFloat(debrisWeight)
                     })
                 });
 
-                const result = await response.json();
-                const analysisResult = document.getElementById('analysisResult');
-                analysisResult.innerHTML = `<pre class="whitespace-pre-wrap text-sm text-gray-700">${result.analysis}</pre>`;
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Analysis request failed');
+                }
+                
+                const data = await response.json();
+                
+                // Show analysis result section with animation
                 analysisResult.classList.remove('hidden');
-                document.getElementById('debrisForm').reset();
+                analysisResult.classList.add('animate__fadeIn');
+
+                // Render markdown content for analysis
+                document.getElementById('analysisContent').innerHTML = marked.parse(data.analysis);
+                document.getElementById('disposalContent').innerHTML = marked.parse(data.analysis);
+                document.getElementById('environmentalContent').innerHTML = marked.parse(data.analysis);
+
+                // Clear input
+                document.getElementById('debrisWeight').value = '';
+
             } catch (error) {
-                console.error('Error analyzing debris:', error);
+                console.error('Error during analysis:', error);
+                alert(error.message || 'Failed to analyze debris. Please try again.');
+            } finally {
+                // Hide loading spinner and reset button
+                loadingSpinner.classList.add('hidden');
+                analyzeButton.querySelector('span').textContent = 'Analyze Debris';
+                analyzeButton.disabled = false;
             }
         });
 
-        // Initial load
-        fetchMaterials();
+        // Initialize marked.js options
+        marked.setOptions({
+            gfm: true,
+            breaks: true,
+            sanitize: true
+        });
     </script>
 </body>
 </html>

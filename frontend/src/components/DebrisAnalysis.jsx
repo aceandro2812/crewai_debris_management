@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const DebrisAnalysis = () => {
   const [debris, setDebris] = useState({ weight: '' });
-  const [analysis, setAnalysis] = useState(null);
+  const [analysisResults, setAnalysisResults] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -12,18 +12,32 @@ const DebrisAnalysis = () => {
     setLoading(true);
     try {
       const response = await axios.post('http://localhost:8000/debris/analyze/', debris);
-      setAnalysis(response.data.analysis);
+      setAnalysisResults(response.data.analysis);
     } catch (error) {
       console.error('Error analyzing debris:', error);
     }
     setLoading(false);
   };
 
+  const renderAnalysisSection = (title, data) => {
+    if (!data) return null;
+    return (
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          {title}
+        </Typography>
+        <Typography variant="body1" component="pre" sx={{ whiteSpace: 'pre-wrap', backgroundColor: '#f5f5f5', p: 2, borderRadius: 1 }}>
+          {typeof data === 'object' ? JSON.stringify(data, null, 2) : data}
+        </Typography>
+      </Box>
+    );
+  };
+
   return (
     <Card sx={{ maxWidth: 800, margin: '20px auto' }}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          Analyze Construction Debris
+          Debris Analysis
         </Typography>
         <Box component="form" onSubmit={handleSubmit}>
           <TextField
@@ -52,14 +66,11 @@ const DebrisAnalysis = () => {
           </Box>
         )}
 
-        {analysis && (
+        {analysisResults && (
           <Box sx={{ mt: 4 }}>
-            <Typography variant="h6" gutterBottom>
-              Analysis Results
-            </Typography>
-            <Typography variant="body1" component="pre" sx={{ whiteSpace: 'pre-wrap' }}>
-              {analysis}
-            </Typography>
+            {renderAnalysisSection('Composition Analysis', analysisResults.analysis)}
+            {renderAnalysisSection('Disposal Strategies', analysisResults.disposal)}
+            {renderAnalysisSection('Environmental Impact', analysisResults.environmental_impact)}
           </Box>
         )}
       </CardContent>

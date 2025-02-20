@@ -12,7 +12,7 @@ class ConstructionMaterial(Base):
     weight = Column(Float)
     date_added = Column(DateTime, default=datetime.utcnow)
 
-class Debris(Base):
+class DebrisModel(Base):
     __tablename__ = "debris"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -41,8 +41,8 @@ class DebrisCreate(DebrisBase):
     pass
 
 class Debris(DebrisBase):
-    id: int
-    date_added: datetime
+    id: int | None = None
+    date_added: datetime = datetime.utcnow()
 
     class Config:
         orm_mode = True
