@@ -1,0 +1,16 @@
+c:\Users\iyer-10\Projects\crewai_site_debris_management\
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── database.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   └── schemas.py
+│   ├── crews/
+│   │   ├── __init__.py
+│   │   └── debris_management_crew.py
+│   └── agents/
+│       ├── __init__.py
+│       └── debris_agents.py
+├── requirements.txt
+└── README.md

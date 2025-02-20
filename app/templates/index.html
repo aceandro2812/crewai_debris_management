@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construction Site Debris Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Construction Site Debris Management</h1>
+        
+        <!-- Materials Management Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Materials Management</h2>
+            <form id="materialForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="materialName" placeholder="Material Name" required
+                        class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                    <input type="number" id="materialWeight" placeholder="Weight (kg)" required
+                        class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">
+                    Add Material
+                </button>
+            </form>
+        </div>
+
+        <!-- Materials List Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Materials List</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight (kg)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Added</th>
+                        </tr>
+                    </thead>
+                    <tbody id="materialsList" class="bg-white divide-y divide-gray-200">
+                        <!-- Materials will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Debris Analysis Section -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Debris Analysis</h2>
+            <form id="debrisForm" class="space-y-4">
+                <input type="number" id="debrisWeight" placeholder="Debris Weight (kg)" required
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                <button type="submit"
+                    class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-200">
+                    Analyze Debris
+                </button>
+            </form>
+            <div id="analysisResult" class="mt-4 p-4 bg-gray-50 rounded hidden">
+                <!-- Analysis results will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fetch and display materials
+        async function fetchMaterials() {
+            try {
+                const response = await fetch('/materials/');
+                const materials = await response.json();
+                const tbody = document.getElementById('materialsList');
+                tbody.innerHTML = materials.map(material => `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${material.material_name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${material.weight}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${new Date(material.date_added).toLocaleDateString()}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching materials:', error);
+            }
+        }
+
+        // Add new material
+        document.getElementById('materialForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const materialName = document.getElementById('materialName').value;
+            const materialWeight = document.getElementById('materialWeight').value;
+
+            try {
+                const response = await fetch('/materials/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        material_name: materialName,
+                        weight: parseFloat(materialWeight)
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('materialForm').reset();
+                    fetchMaterials();
+                }
+            } catch (error) {
+                console.error('Error adding material:', error);
+            }
+        });
+
+        // Analyze debris
+        document.getElementById('debrisForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const debrisWeight = document.getElementById('debrisWeight').value;
+
+            try {
+                const response = await fetch('/debris/analyze/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        weight: parseFloat(debrisWeight)
+                    })
+                });
+
+                const result = await response.json();
+                const analysisResult = document.getElementById('analysisResult');
+                analysisResult.innerHTML = `<pre class="whitespace-pre-wrap text-sm text-gray-700">${result.analysis}</pre>`;
+                analysisResult.classList.remove('hidden');
+                document.getElementById('debrisForm').reset();
+            } catch (error) {
+                console.error('Error analyzing debris:', error);
+            }
+        });
+
+        // Initial load
+        fetchMaterials();
+    </script>
+</body>
+</html>
